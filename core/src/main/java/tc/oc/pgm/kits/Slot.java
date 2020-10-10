@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.Nullable;
+import tc.oc.pgm.api.player.MatchPlayer;
 import tc.oc.pgm.util.inventory.InventoryUtils;
 
 /**
@@ -74,8 +75,8 @@ public abstract class Slot {
    * @return the item in this slot of the given holder's inventory, or null if the slot is empty.
    *     This will never return a stack of {@link Material#AIR}.
    */
-  public @Nullable ItemStack getItem(HumanEntity holder) {
-    ItemStack stack = getInventory(holder).getItem(getIndex());
+  public @Nullable ItemStack getItem(HumanEntity holder, int slot) {
+    ItemStack stack = getInventory(holder).getItem(slot);
     return stack == null || stack.getType() == Material.AIR ? null : stack;
   }
 
@@ -85,12 +86,12 @@ public abstract class Slot {
    * @return a stack of any items that were NOT placed in the inventory, or null if the entire stack
    *     was placed. This can only be non-null when placing in the auto-slot.
    */
-  public @Nullable ItemStack putItem(HumanEntity holder, ItemStack stack) {
+  public @Nullable ItemStack putItem(MatchPlayer holder, ItemStack stack, int slot) {
     if (isAuto()) {
-      stack = addItem(holder, stack);
+      stack = addItem(holder.getBukkit(), stack);
       return stack.getAmount() > 0 ? stack : null;
     } else {
-      getInventory(holder).setItem(getIndex(), stack);
+      getInventory(holder.getBukkit()).setItem(slot, stack);
       return null;
     }
   }

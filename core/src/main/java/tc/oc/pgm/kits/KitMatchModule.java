@@ -37,11 +37,17 @@ public class KitMatchModule implements MatchModule, Listener {
 
   private final Match match;
   private final Set<KitRule> kitRules;
+  private KitModule module;
   private final SetMultimap<MatchPlayer, ArmorType> lockedArmorSlots = HashMultimap.create();
 
-  public KitMatchModule(Match match, Set<KitRule> kitRules) {
+  public KitMatchModule(Match match, Set<KitRule> kitRules, KitModule module) {
     this.match = match;
     this.kitRules = kitRules;
+    this.module = module;
+  }
+
+  public KitModule getModule() {
+    return module;
   }
 
   @Override
