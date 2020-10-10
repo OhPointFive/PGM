@@ -35,10 +35,16 @@ public class KitModule implements MapModule<KitMatchModule> {
 
   private static final MapTag TNT = new MapTag("tnt", "TNT");
   private final Set<KitRule> kitRules;
+  private Set<Kit> kits;
   private boolean hasTnt;
 
-  public KitModule(Set<KitRule> kitRules) {
+  public KitModule(Set<KitRule> kitRules, Set<Kit> kits) {
     this.kitRules = ImmutableSet.copyOf(kitRules);
+    this.kits = kits;
+  }
+
+  public Set<Kit> getKits() {
+    return kits;
   }
 
   @Override
@@ -54,7 +60,7 @@ public class KitModule implements MapModule<KitMatchModule> {
 
   @Override
   public KitMatchModule createMatchModule(Match match) {
-    return new KitMatchModule(match, kitRules);
+    return new KitMatchModule(match, kitRules, this);
   }
 
   @Override
@@ -73,9 +79,11 @@ public class KitModule implements MapModule<KitMatchModule> {
     public KitModule parse(MapFactory factory, Logger logger, Document doc)
         throws InvalidXMLException {
       Set<KitRule> kitRules = Sets.newHashSet();
+      Set<Kit> kits = Sets.newHashSet();
       for (Element kitsElement : doc.getRootElement().getChildren("kits")) {
         for (Element kitElement : kitsElement.getChildren("kit")) {
-          factory.getKits().parse(kitElement);
+          Kit kit = factory.getKits().parse(kitElement);
+          kits.add(kit);
         }
         for (Element kitElement : XMLUtils.getChildren(kitsElement, "give", "take", "lend")) {
           KitRule kitRule = parseRule(factory, kitElement);
@@ -84,7 +92,7 @@ public class KitModule implements MapModule<KitMatchModule> {
         }
       }
 
-      return new KitModule(kitRules);
+      return new KitModule(kitRules, kits);
     }
 
     private KitRule parseRule(MapFactory factory, Element el) throws InvalidXMLException {
