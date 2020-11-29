@@ -617,6 +617,8 @@ public class MatchImpl implements Match {
       logger.fine("Checking victory condition " + condition);
       if (condition.isCompleted(this)) {
         logger.fine("Condition " + condition + " is satisfied, ending match");
+        System.out.println(
+            "Match Finish A: Condition " + condition + " is satisfied, ending match " + getId());
         finish(null);
         return true;
       }
