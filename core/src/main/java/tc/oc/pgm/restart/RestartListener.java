@@ -38,7 +38,8 @@ public class RestartListener implements Listener {
     if (match.isRunning()) {
       if (match.getParticipants().isEmpty()) {
         this.logger.info("Ending empty match due to restart request");
-        match.finish();
+        // match.finish();
+        System.out.println("Match Finish E: " + match.getId());
       }
     }
   }

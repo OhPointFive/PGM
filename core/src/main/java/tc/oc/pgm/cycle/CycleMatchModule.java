@@ -48,9 +48,9 @@ public class CycleMatchModule implements MatchModule, Listener {
     if (event.wasParticipating()
         && match.isRunning()
         && match.getParticipants().size() < PGM.get().getConfiguration().getMinimumPlayers()) {
-      match.getLogger().info("Cycling due to empty match");
-      match.finish();
-      startCountdown(null);
+      match.getLogger().info("Match Finish D: Cycling due to empty match " + match.getId());
+      //      match.finish();
+      //      startCountdown(null);
     }
   }
 
