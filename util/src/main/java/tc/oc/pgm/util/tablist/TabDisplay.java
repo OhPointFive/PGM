@@ -58,7 +58,7 @@ public class TabDisplay {
 
   public TabDisplay(Player viewer, int width) {
     // Number of columns is maxPlayers/rows rounded up
-    this.width = width;
+    this.width = width - 1;
     this.slots = this.width * HEIGHT;
 
     this.viewer = viewer;

@@ -29,6 +29,7 @@ public final class RestartCommand {
 
     if (force && match.isRunning()) {
       match.finish();
+      System.out.println("Match Finish C: " + match.getId());
     }
 
     if (match.isRunning()) {
