@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <relativePath>../pom.xml</relativePath>
-        <version>0.16-SNAPSHOT</version>
+        <version>0.16-SNAPSHOT-Stratus</version>
         <groupId>tc.oc.pgm</groupId>
         <artifactId>pgm</artifactId>
     </parent>
