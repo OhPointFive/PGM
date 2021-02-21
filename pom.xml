@@ -29,7 +29,7 @@
 
     <groupId>tc.oc.pgm</groupId>
     <artifactId>pgm</artifactId>
-    <version>0.16-SNAPSHOT</version>
+    <version>0.16-SNAPSHOT-Stratus</version>
     <packaging>pom</packaging>
 
     <modules>
