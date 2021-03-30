@@ -517,6 +517,10 @@ public class StatsMatchModule implements MatchModule, Listener {
     return allPlayerStats.get(uuid);
   }
 
+  public Map<UUID, PlayerStats> getAllPlayerStats() {
+    return allPlayerStats;
+  }
+
   public final PlayerStats getPlayerStat(ParticipantState player) {
     return computeTeamStatsIfAbsent(player.getId(), player.getParty());
   }
