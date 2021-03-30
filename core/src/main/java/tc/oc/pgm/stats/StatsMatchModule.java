@@ -403,6 +403,10 @@ public class StatsMatchModule implements MatchModule, Listener {
     return allPlayerStats.get(player) == null;
   }
 
+  public Map<UUID, PlayerStats> getAllPlayerStats() {
+    return allPlayerStats;
+  }
+
   public final PlayerStats getPlayerStat(ParticipantState player) {
     return getPlayerStat(player.getId());
   }
