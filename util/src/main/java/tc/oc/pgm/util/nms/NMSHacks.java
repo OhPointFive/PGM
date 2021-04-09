@@ -2,6 +2,7 @@ package tc.oc.pgm.util.nms;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.SetMultimap;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
@@ -101,6 +102,21 @@ public interface NMSHacks {
 
   static void sendBlockChange(Location loc, Player player, @Nullable Material material) {
     INSTANCE.sendBlockChange(loc, player, material);
+  }
+
+  static void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      org.bukkit.inventory.ItemStack item,
+      int count,
+      Duration duration) {
+    INSTANCE.showFakeItems(plugin, viewer, location, item, count, duration);
+  }
+
+  static void scheduleEntityDestroy(
+      Plugin plugin, UUID viewerUuid, Duration delay, int[] entityIds) {
+    INSTANCE.scheduleEntityDestroy(plugin, viewerUuid, delay, entityIds);
   }
 
   static void updateChunkSnapshot(ChunkSnapshot snapshot, org.bukkit.block.BlockState blockState) {

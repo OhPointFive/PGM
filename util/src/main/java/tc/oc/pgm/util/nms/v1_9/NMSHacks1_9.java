@@ -17,6 +17,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.SetMultimap;
 import com.google.common.collect.Sets;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -417,6 +418,23 @@ public class NMSHacks1_9 extends NMSHacksNoOp {
     packet.getBlockData().write(0, data);
 
     sendPacket(player, packet);
+  }
+
+  @Override
+  public void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      org.bukkit.inventory.ItemStack item,
+      int count,
+      Duration duration) {
+    // I don't need to support 1.9
+  }
+
+  @Override
+  public void scheduleEntityDestroy(
+      Plugin plugin, UUID viewerUuid, Duration delay, int[] entityIds) {
+    // I don't need to support 1.9
   }
 
   @Override

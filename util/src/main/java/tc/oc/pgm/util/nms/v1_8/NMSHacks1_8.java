@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -27,6 +29,7 @@ import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.EntityArrow;
 import net.minecraft.server.v1_8_R3.EntityFireball;
 import net.minecraft.server.v1_8_R3.EntityFireworks;
+import net.minecraft.server.v1_8_R3.EntityItem;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.EntityTrackerEntry;
@@ -103,6 +106,7 @@ import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import tc.oc.pgm.util.TimeUtils;
 import tc.oc.pgm.util.attribute.AttributeMap;
 import tc.oc.pgm.util.attribute.AttributeModifier;
 import tc.oc.pgm.util.block.RayBlockIntersection;
@@ -112,6 +116,7 @@ import tc.oc.pgm.util.nms.EnumPlayerInfoAction;
 import tc.oc.pgm.util.nms.NMSHacksNoOp;
 import tc.oc.pgm.util.nms.attribute.AttributeMap1_8;
 import tc.oc.pgm.util.nms.entity.fake.FakeEntity;
+import tc.oc.pgm.util.nms.entity.fake.FakeItemImpl1_8;
 import tc.oc.pgm.util.nms.entity.fake.armorstand.FakeArmorStand1_8;
 import tc.oc.pgm.util.nms.entity.fake.wither.FakeWitherSkull1_8;
 import tc.oc.pgm.util.nms.entity.potion.EntityPotion;
@@ -299,6 +304,55 @@ public class NMSHacks1_8 extends NMSHacksNoOp {
   public void sendBlockChange(Location loc, Player player, @Nullable Material material) {
     if (material != null) player.sendBlockChange(loc, material, (byte) 0);
     else player.sendBlockChange(loc, loc.getBlock().getType(), loc.getBlock().getData());
+  }
+
+  @Override
+  public void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      org.bukkit.inventory.ItemStack item,
+      int count,
+      Duration duration) {
+    if (count <= 0) return;
+
+    final int[] entityIds = new int[count];
+
+    for (int i = 0; i < count; i++) {
+      FakeItemImpl1_8 fakeItem = new FakeItemImpl1_8(viewer.getWorld());
+      EntityItem entity = fakeItem.entity;
+      entity.setItemStack(CraftItemStack.asNMSCopy(item));
+
+      Random random = new Random();
+      entity.motX = random.nextDouble() - 0.5d;
+      entity.motY = random.nextDouble() - 0.5d;
+      entity.motZ = random.nextDouble() - 0.5d;
+
+      fakeItem.spawn(viewer, location);
+      sendPacket(
+          viewer, new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true));
+
+      entityIds[i] = entity.getId();
+    }
+
+    scheduleEntityDestroy(plugin, viewer.getUniqueId(), duration, entityIds);
+  }
+
+  @Override
+  public void scheduleEntityDestroy(
+      Plugin plugin, UUID viewerUuid, Duration delay, int[] entityIds) {
+    plugin
+        .getServer()
+        .getScheduler()
+        .runTaskLater(
+            plugin,
+            () -> {
+              final Player viewer = plugin.getServer().getPlayer(viewerUuid);
+              if (viewer != null) {
+                sendPacket(viewer, new PacketPlayOutEntityDestroy(entityIds));
+              }
+            },
+            TimeUtils.toTicks(delay));
   }
 
   @Override

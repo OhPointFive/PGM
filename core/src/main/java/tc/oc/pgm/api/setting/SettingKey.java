@@ -19,6 +19,11 @@ import tc.oc.pgm.util.Aliased;
  * @see SettingValue
  */
 public enum SettingKey implements Aliased {
+  AUTOJOIN(
+      Arrays.asList("autojoin", "auto"),
+      Material.GOLD_SWORD,
+      AUTOJOIN_ON,
+      AUTOJOIN_OFF), // Changes if a match join automatically happens
   CHAT(
       "chat",
       Material.SIGN,

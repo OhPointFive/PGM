@@ -30,7 +30,7 @@ public abstract class Spawning extends Participating {
   public Spawning(SpawnMatchModule smm, MatchPlayer player, long deathTick) {
     super(smm, player);
     this.options = smm.getRespawnOptions(player);
-    this.spawnRequested = options.auto;
+    this.spawnRequested = true;
     this.deathTick = deathTick;
   }
 
