@@ -3,6 +3,7 @@ package tc.oc.pgm.variables.types;
 import tc.oc.pgm.api.match.Match;
 import tc.oc.pgm.api.party.Competitor;
 import tc.oc.pgm.api.party.Party;
+import tc.oc.pgm.score.ScoreCause;
 import tc.oc.pgm.score.ScoreMatchModule;
 import tc.oc.pgm.variables.VariableDefinition;
 
@@ -27,6 +28,6 @@ public class ScoreVariable extends AbstractVariable<Party> {
 
   @Override
   protected void setValueImpl(Party party, double value) {
-    if (party instanceof Competitor) smm.setScore((Competitor) party, value);
+    if (party instanceof Competitor) smm.setScore((Competitor) party, value, ScoreCause.VARIABLE);
   }
 }

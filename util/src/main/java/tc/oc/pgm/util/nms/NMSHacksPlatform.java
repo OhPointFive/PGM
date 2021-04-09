@@ -1,6 +1,7 @@
 package tc.oc.pgm.util.nms;
 
 import com.google.common.collect.SetMultimap;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
@@ -66,6 +67,16 @@ public interface NMSHacksPlatform {
   EntityPotion entityPotion(Location location, ItemStack potionItem);
 
   void sendBlockChange(Location loc, Player player, @Nullable Material material);
+
+  void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      org.bukkit.inventory.ItemStack item,
+      int count,
+      Duration duration);
+
+  void scheduleEntityDestroy(Plugin plugin, UUID viewerUuid, Duration delay, int[] entityIds);
 
   default void updateChunkSnapshot(
       ChunkSnapshot snapshot, org.bukkit.block.BlockState blockState) {}

@@ -78,7 +78,7 @@ public class Observing extends State {
     if (reset) {
       // Give basic observer items
       ObserverToolFactory toolFactory = smm.getObserverToolFactory();
-      player.getInventory().setItem(0, toolFactory.getTeleportTool(bukkit));
+      player.getInventory().setItem(3, toolFactory.getTeleportTool(bukkit));
 
       if (toolFactory.canUseEditWand(bukkit)) {
         player.getInventory().setItem(1, toolFactory.getEditWand(bukkit));

@@ -7,9 +7,9 @@ import tc.oc.pgm.util.nms.NMSHacks;
 
 public abstract class FakeEntityImpl1_8<T extends net.minecraft.server.v1_8_R3.Entity>
     implements FakeEntity {
-  protected final T entity;
+  public final T entity;
 
-  protected FakeEntityImpl1_8(T entity) {
+  public FakeEntityImpl1_8(T entity) {
     this.entity = entity;
   }
 
