@@ -12,6 +12,7 @@ import tc.oc.pgm.api.map.MapModule;
 import tc.oc.pgm.api.map.factory.MapModuleFactory;
 import tc.oc.pgm.api.match.MatchModule;
 import tc.oc.pgm.api.match.factory.MatchModuleFactory;
+import tc.oc.pgm.autojoin.AutoJoinMatchModule;
 import tc.oc.pgm.blitz.BlitzMatchModule;
 import tc.oc.pgm.blitz.BlitzModule;
 import tc.oc.pgm.blockdrops.BlockDropsMatchModule;
@@ -230,6 +231,7 @@ public final class Modules {
     register(StartMatchModule.class, new StartMatchModule.Factory());
     register(SidebarMatchModule.class, new SidebarMatchModule.Factory());
     register(PickerMatchModule.class, new PickerMatchModule.Factory());
+    register(AutoJoinMatchModule.class, new AutoJoinMatchModule.Factory());
 
     // MapModules that create a MatchModule
     register(VariablesModule.class, VariablesMatchModule.class, new VariablesModule.Factory());

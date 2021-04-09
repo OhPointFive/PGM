@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -38,10 +39,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
+import tc.oc.pgm.util.TimeUtils;
 import tc.oc.pgm.util.attribute.AttributeModifier;
 import tc.oc.pgm.util.block.RayBlockIntersection;
 import tc.oc.pgm.util.bukkit.BukkitUtils;
@@ -1208,6 +1211,53 @@ public interface NMSHacks {
     else player.sendBlockChange(loc, loc.getBlock().getType(), loc.getBlock().getData());
   }
 
+  static void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      org.bukkit.inventory.ItemStack item,
+      int count,
+      Duration duration) {
+    if (count <= 0) return;
+
+    final int[] entityIds = new int[count];
+
+    for (int i = 0; i < count; i++) {
+      FakeItem fakeItem = new FakeItem(viewer.getWorld());
+      EntityItem entity = fakeItem.entity;
+      entity.setItemStack(CraftItemStack.asNMSCopy(item));
+
+      Random random = new Random();
+      entity.motX = random.nextDouble() - 0.5d;
+      entity.motY = random.nextDouble() - 0.5d;
+      entity.motZ = random.nextDouble() - 0.5d;
+
+      fakeItem.spawn(viewer, location);
+      sendPacket(
+          viewer, new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true));
+
+      entityIds[i] = entity.getId();
+    }
+
+    scheduleEntityDestroy(plugin, viewer.getUniqueId(), duration, entityIds);
+  }
+
+  static void scheduleEntityDestroy(
+      Plugin plugin, UUID viewerUuid, Duration delay, int[] entityIds) {
+    plugin
+        .getServer()
+        .getScheduler()
+        .runTaskLater(
+            plugin,
+            () -> {
+              final Player viewer = plugin.getServer().getPlayer(viewerUuid);
+              if (viewer != null) {
+                sendPacket(viewer, new PacketPlayOutEntityDestroy(entityIds));
+              }
+            },
+            TimeUtils.toTicks(delay));
+  }
+
   interface FakeEntity {
     int entityId();
 
@@ -1385,5 +1435,30 @@ public interface NMSHacks {
     fireball.dirX = direction.getX() * 0.1D;
     fireball.dirY = direction.getY() * 0.1D;
     fireball.dirZ = direction.getZ() * 0.1D;
+  }
+
+  class FakeItem extends FakeEntityImpl<EntityItem> {
+
+    public FakeItem(World world) {
+      super(new EntityItem(((CraftWorld) world).getHandle()));
+    }
+
+    @Override
+    public void spawn(Player viewer, Location location, Vector velocity) {
+      entity.setPositionRotation(
+          location.getX(),
+          location.getY(),
+          location.getZ(),
+          location.getYaw(),
+          location.getPitch());
+      entity.motX = velocity.getX();
+      entity.motY = velocity.getY();
+      entity.motZ = velocity.getZ();
+      sendPacket(viewer, spawnPacket());
+    }
+
+    protected Packet<?> spawnPacket() {
+      return new PacketPlayOutSpawnEntity(entity, 2);
+    }
   }
 }

@@ -44,6 +44,7 @@ import tc.oc.pgm.goals.events.GoalEvent;
 import tc.oc.pgm.kits.ArmorType;
 import tc.oc.pgm.kits.Kit;
 import tc.oc.pgm.kits.KitMatchModule;
+import tc.oc.pgm.score.ScoreCause;
 import tc.oc.pgm.score.ScoreMatchModule;
 import tc.oc.pgm.scoreboard.SidebarMatchModule;
 import tc.oc.pgm.spawns.events.ParticipantDespawnEvent;
@@ -218,7 +219,8 @@ public class Carried extends Spawned implements Missing {
     if (smm != null && this.flag.getDefinition().getPointsPerSecond() != 0) {
       smm.incrementScore(
           this.getBeneficiary(this.flag.getDefinition().getOwner()),
-          this.flag.getDefinition().getPointsPerSecond() / 20D);
+          this.flag.getDefinition().getPointsPerSecond() / 20D,
+          ScoreCause.FLAG_TICK);
     }
   }
 
@@ -266,13 +268,17 @@ public class Carried extends Spawned implements Missing {
     ScoreMatchModule smm = this.flag.getMatch().getModule(ScoreMatchModule.class);
     if (smm != null) {
       if (net.getPointsPerCapture() != 0) {
-        smm.incrementScore(this.getBeneficiary(net.getOwner()), net.getPointsPerCapture());
+        smm.incrementScore(
+            this.getBeneficiary(net.getOwner()),
+            net.getPointsPerCapture(),
+            ScoreCause.FLAG_NET_CAPTURE);
       }
 
       if (this.flag.getDefinition().getPointsPerCapture() != 0) {
         smm.incrementScore(
             this.getBeneficiary(this.flag.getDefinition().getOwner()),
-            this.flag.getDefinition().getPointsPerCapture());
+            this.flag.getDefinition().getPointsPerCapture(),
+            ScoreCause.FLAG_CAPTURE);
       }
     }
 

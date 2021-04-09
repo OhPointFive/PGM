@@ -27,6 +27,9 @@ public enum SettingValue {
   JOIN_FRIENDS("join", "friends", DyeColor.GREEN), // Only send friend join messages
   JOIN_OFF("join", "none", DyeColor.RED), // Never send join messages
 
+  AUTOJOIN_ON("autojoin", "on", DyeColor.GREEN), // Automatically join teams
+  AUTOJOIN_OFF("autojoin", "off", DyeColor.RED), // Don't automatically join teams
+
   MESSAGE_ON("message", "all", DyeColor.GREEN), // Always accept direct messages
   MESSAGE_FRIEND("message", "friends", DyeColor.YELLOW), // Only accept friend direct messages
   MESSAGE_OFF("message", "none", DyeColor.RED), // Never accept direct messages
