@@ -113,15 +113,22 @@ public class PickerMatchModule implements MatchModule, Listener {
 
   private final Match match;
   private final Set<MatchPlayer> picking = new HashSet<>();
-  private final boolean hasTeams;
-  private final boolean hasClasses;
-  private final boolean isBlitz;
+  private boolean hasTeams;
+  private boolean hasClasses;
+  private boolean isBlitz;
+  private boolean autoJoinEnabled;
 
   private PickerMatchModule(Match match) {
     this.match = match;
     this.hasTeams = match.hasModule(TeamMatchModule.class);
     this.hasClasses = match.hasModule(ClassMatchModule.class);
     this.isBlitz = match.hasModule(BlitzMatchModule.class);
+    this.autoJoinEnabled =
+        PGM.get()
+            .getConfiguration()
+            .getExperiments()
+            .getOrDefault("auto-join", "false")
+            .equals(true);
   }
 
   protected boolean settingEnabled(MatchPlayer player, boolean playerTriggered) {
@@ -298,6 +305,7 @@ public class PickerMatchModule implements MatchModule, Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   public void join(PlayerJoinMatchEvent event) {
     final MatchPlayer player = event.getPlayer();
+    if (autoJoinEnabled) return;
     if (!settingEnabled(player, false)) return;
 
     if (canOpenWindow(player)) {
@@ -367,7 +375,7 @@ public class PickerMatchModule implements MatchModule, Listener {
 
     if (hand.getType() == Button.JOIN.material) {
       handled = true;
-      if (right && canOpenWindow(player) && settingEnabled(player, true)) {
+      if ((right || autoJoinEnabled) && canOpenWindow(player) && settingEnabled(player, true)) {
         showWindow(player);
       } else {
         // If there is nothing to pick or setting is disabled, just join immediately

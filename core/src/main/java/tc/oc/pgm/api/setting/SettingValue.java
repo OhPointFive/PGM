@@ -24,6 +24,9 @@ public enum SettingValue {
   JOIN_ON("join", "all", DyeColor.ORANGE), // Send all join messages
   JOIN_OFF("join", "none", DyeColor.RED), // Never send join messages
 
+  AUTOJOIN_ON("autojoin", "on", DyeColor.GREEN), // Automatically join teams
+  AUTOJOIN_OFF("autojoin", "off", DyeColor.RED), // Don't automatically join teams
+
   MESSAGE_ON("message", "on", DyeColor.GREEN), // Always accept direct messages
   MESSAGE_OFF("message", "off", DyeColor.RED), // Never accept direct messages
 

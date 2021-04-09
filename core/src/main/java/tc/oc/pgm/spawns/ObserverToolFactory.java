@@ -26,7 +26,7 @@ public class ObserverToolFactory {
 
   public ItemStack getTeleportTool(Player player) {
     return new ItemBuilder()
-        .material(Material.COMPASS)
+        .material(Material.ENDER_PEARL)
         .name(
             ChatColor.BLUE.toString()
                 + ChatColor.BOLD
