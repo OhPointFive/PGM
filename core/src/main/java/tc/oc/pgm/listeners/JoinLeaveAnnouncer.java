@@ -87,7 +87,7 @@ public class JoinLeaveAnnouncer implements Listener {
           component = text().append(ChatDispatcher.ADMIN_CHAT_PREFIX).append(component).build();
         }
 
-        viewer.sendMessage(component);
+        // viewer.sendMessage(component);
       }
     }
   }
