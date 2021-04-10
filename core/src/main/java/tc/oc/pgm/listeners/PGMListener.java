@@ -209,11 +209,12 @@ public class PGMListener implements Listener {
       SettingValue option = viewer.getSettings().getValue(SettingKey.JOIN);
       if (option.equals(SettingValue.JOIN_ON)) {
         Component component =
-            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.FANCY));
-        viewer.sendMessage(
-            staffOnly
-                ? ChatDispatcher.ADMIN_CHAT_PREFIX.append(component.color(NamedTextColor.YELLOW))
-                : component.color(NamedTextColor.YELLOW));
+            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.CONCISE));
+        //        viewer.sendMessage(
+        //            staffOnly
+        //                ?
+        // ChatDispatcher.ADMIN_CHAT_PREFIX.append(component.color(NamedTextColor.YELLOW))
+        //                : component.color(NamedTextColor.YELLOW));
       }
     }
   }
