@@ -3,11 +3,15 @@ package tc.oc.pgm.listeners;
 import static net.kyori.adventure.text.Component.space;
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
+import static tc.oc.pgm.util.Assert.assertNotNull;
 
+import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
@@ -43,6 +47,8 @@ import tc.oc.pgm.api.match.event.MatchFinishEvent;
 import tc.oc.pgm.api.match.event.MatchLoadEvent;
 import tc.oc.pgm.api.match.event.MatchStartEvent;
 import tc.oc.pgm.api.player.MatchPlayer;
+import tc.oc.pgm.api.setting.SettingKey;
+import tc.oc.pgm.api.setting.SettingValue;
 import tc.oc.pgm.events.MapPoolAdjustEvent;
 import tc.oc.pgm.events.PlayerJoinMatchEvent;
 import tc.oc.pgm.events.PlayerParticipationStopEvent;
@@ -152,6 +158,40 @@ public class PGMListener implements Listener {
     if (player == null) return;
 
     player.getMatch().removePlayer(event.getPlayer());
+  }
+
+  public static void announceJoinOrLeave(MatchPlayer player, boolean join, boolean staffOnly) {
+    announceJoinOrLeave(player, join, staffOnly, false);
+  }
+
+  public static void announceJoinOrLeave(
+      MatchPlayer player, boolean join, boolean staffOnly, boolean force) {
+    assertNotNull(player);
+    Collection<MatchPlayer> viewers =
+        player.getMatch().getPlayers().stream()
+            .filter(p -> !staffOnly || p.getBukkit().hasPermission(Permissions.STAFF))
+            .collect(Collectors.toList());
+
+    for (MatchPlayer viewer : viewers) {
+      if (player.equals(viewer)) continue;
+      if (!staffOnly && player.isVanished() && viewer.getBukkit().hasPermission(Permissions.STAFF))
+        continue; // Skip staff during fake broadcast
+
+      final String key =
+          (join ? "misc.join" : "misc.leave")
+              + (staffOnly && (player.isVanished() || force) ? ".quiet" : "");
+
+      SettingValue option = viewer.getSettings().getValue(SettingKey.JOIN);
+      if (option.equals(SettingValue.JOIN_ON)) {
+        Component component =
+            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.CONCISE));
+        //        viewer.sendMessage(
+        //            staffOnly
+        //                ?
+        // ChatDispatcher.ADMIN_CHAT_PREFIX.append(component.color(NamedTextColor.YELLOW))
+        //                : component.color(NamedTextColor.YELLOW));
+      }
+    }
   }
 
   @EventHandler(ignoreCancelled = true)
