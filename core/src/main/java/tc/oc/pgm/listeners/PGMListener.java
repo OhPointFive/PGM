@@ -11,7 +11,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.ChatColor;
@@ -40,6 +39,7 @@ import org.bukkit.util.Vector;
 import tc.oc.pgm.api.PGM;
 import tc.oc.pgm.api.Permissions;
 import tc.oc.pgm.api.event.BlockTransformEvent;
+import tc.oc.pgm.api.integration.Integration;
 import tc.oc.pgm.api.map.GameRule;
 import tc.oc.pgm.api.match.Match;
 import tc.oc.pgm.api.match.MatchManager;
@@ -55,6 +55,7 @@ import tc.oc.pgm.events.PlayerParticipationStopEvent;
 import tc.oc.pgm.gamerules.GameRulesMatchModule;
 import tc.oc.pgm.modules.WorldTimeModule;
 import tc.oc.pgm.util.UsernameFormatUtils;
+import tc.oc.pgm.util.named.NameStyle;
 import tc.oc.pgm.util.nms.NMSHacks;
 import tc.oc.pgm.util.text.TemporalComponent;
 import tc.oc.pgm.util.text.TextTranslations;
@@ -174,17 +175,21 @@ public class PGMListener implements Listener {
 
     for (MatchPlayer viewer : viewers) {
       if (player.equals(viewer)) continue;
-      if (!staffOnly && player.isVanished() && viewer.getBukkit().hasPermission(Permissions.STAFF))
+      if (!staffOnly
+          && Integration.isVanished(player.getBukkit())
+          && viewer.getBukkit().hasPermission(Permissions.STAFF))
         continue; // Skip staff during fake broadcast
 
       final String key =
           (join ? "misc.join" : "misc.leave")
-              + (staffOnly && (player.isVanished() || force) ? ".quiet" : "");
+              + (staffOnly && (Integration.isVanished(player.getBukkit()) || force)
+                  ? ".quiet"
+                  : "");
 
       SettingValue option = viewer.getSettings().getValue(SettingKey.JOIN);
       if (option.equals(SettingValue.JOIN_ON)) {
         Component component =
-            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.CONCISE));
+            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.PLAIN));
         //        viewer.sendMessage(
         //            staffOnly
         //                ?

@@ -5,11 +5,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nullable;
+import java.util.concurrent.TimeUnit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.Nullable;
 import tc.oc.pgm.api.PGM;
 import tc.oc.pgm.api.match.Match;
 import tc.oc.pgm.api.match.MatchModule;
@@ -144,11 +145,13 @@ public class AutoJoinMatchModule implements MatchModule, Listener {
     final Player bukkit = player.getBukkit();
     match
         .getExecutor(MatchScope.LOADED)
-        .execute(
+        .schedule(
             () -> {
               if (bukkit.isOnline()) {
                 match.needModule(JoinMatchModule.class).join(player, team);
               }
-            });
+            },
+            500,
+            TimeUnit.MICROSECONDS);
   }
 }

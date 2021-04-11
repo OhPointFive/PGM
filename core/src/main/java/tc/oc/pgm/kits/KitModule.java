@@ -48,7 +48,7 @@ public class KitModule implements MapModule<KitMatchModule> {
   }
 
   @Override
-  public MatchModule createMatchModule(Match match) {
+  public KitMatchModule createMatchModule(Match match) {
     return new KitMatchModule(match, kitRules, this);
   }
 

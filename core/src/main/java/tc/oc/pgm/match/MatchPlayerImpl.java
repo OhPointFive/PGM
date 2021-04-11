@@ -79,6 +79,8 @@ public class MatchPlayerImpl implements MatchPlayer, Comparable<MatchPlayer> {
   private final AtomicBoolean protocolReady;
   private final AtomicInteger protocolVersion;
   private final AttributeMap attributeMap;
+  private String deathMessage;
+  private String killMessage;
 
   public MatchPlayerImpl(Match match, Player player) {
     this.logger =
@@ -188,6 +190,26 @@ public class MatchPlayerImpl implements MatchPlayer, Comparable<MatchPlayer> {
   @Override
   public boolean isFrozen() {
     return frozen.get();
+  }
+
+  @Override
+  public String getDeathMessage() {
+    return deathMessage;
+  }
+
+  @Override
+  public void setDeathMessage(String deathMessage) {
+    this.deathMessage = deathMessage;
+  }
+
+  @Override
+  public String getKillMessage() {
+    return killMessage;
+  }
+
+  @Override
+  public void setKillMessage(String killMessage) {
+    this.killMessage = killMessage;
   }
 
   @Override
