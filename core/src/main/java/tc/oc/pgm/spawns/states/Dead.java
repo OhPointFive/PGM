@@ -4,6 +4,9 @@ import static net.kyori.adventure.text.Component.translatable;
 import static tc.oc.pgm.util.player.PlayerComponent.player;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.Event;
@@ -14,6 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 import tc.oc.pgm.api.match.MatchScope;
 import tc.oc.pgm.api.party.Competitor;
 import tc.oc.pgm.api.player.MatchPlayer;
+import tc.oc.pgm.api.player.ParticipantState;
 import tc.oc.pgm.events.PlayerJoinPartyEvent;
 import tc.oc.pgm.spawns.SpawnMatchModule;
 import tc.oc.pgm.spawns.SpawnModule;
@@ -33,14 +37,19 @@ public class Dead extends Spawning {
   private static final PotionEffect BLINDNESS_LONG =
       new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 0, true, false);
 
+  @Nullable private final ParticipantState killer;
+  private final long deathTick;
   private boolean kitted, rotted;
 
-  public Dead(SpawnMatchModule smm, MatchPlayer player) {
-    this(smm, player, player.getMatch().getTick().tick);
+  public Dead(SpawnMatchModule smm, MatchPlayer player, @Nullable ParticipantState killer) {
+    this(smm, player, killer, player.getMatch().getTick().tick);
   }
 
-  public Dead(SpawnMatchModule smm, MatchPlayer player, long deathTick) {
+    public Dead(
+      SpawnMatchModule smm, MatchPlayer player, @Nullable ParticipantState killer, long deathTick) {
     super(smm, player, deathTick);
+    this.killer = killer;
+    this.deathTick = deathTick;
   }
 
   @Override
