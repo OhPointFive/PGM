@@ -11,9 +11,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.Nullable;
 import tc.oc.pgm.api.match.MatchScope;
 import tc.oc.pgm.api.party.Competitor;
 import tc.oc.pgm.api.player.MatchPlayer;
+import tc.oc.pgm.api.player.ParticipantState;
 import tc.oc.pgm.events.PlayerJoinPartyEvent;
 import tc.oc.pgm.spawns.SpawnMatchModule;
 import tc.oc.pgm.spawns.SpawnModule;
@@ -33,10 +35,17 @@ public class Dead extends Spawning {
   private static final PotionEffect BLINDNESS_LONG =
       new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 0, true, false);
 
+  @Nullable private final ParticipantState killer;
   private boolean kitted, rotted;
 
-  public Dead(SpawnMatchModule smm, MatchPlayer player) {
-    super(smm, player, player.getMatch().getTick().tick);
+  public Dead(SpawnMatchModule smm, MatchPlayer player, @Nullable ParticipantState killer) {
+    this(smm, player, killer, player.getMatch().getTick().tick);
+  }
+
+  public Dead(
+      SpawnMatchModule smm, MatchPlayer player, @Nullable ParticipantState killer, long deathTick) {
+    super(smm, player, deathTick);
+    this.killer = killer;
   }
 
   @Override

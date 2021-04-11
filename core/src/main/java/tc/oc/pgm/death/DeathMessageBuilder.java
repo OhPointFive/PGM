@@ -75,16 +75,45 @@ public class DeathMessageBuilder {
 
     if (predicted) message = message.append(space()).append(translatable("death.predictedSuffix"));
 
+    if (key != null
+        && (key.equals("death.player") || key.equals("death.melee.player.item"))
+        && this.killer != null
+        && this.killer.getPlayer().isPresent()) {
+      MatchPlayer killer = this.killer.getPlayer().get();
+
+      //      if (killer.getKillMessage() != null) {
+      //        message =
+      //            text(
+      //                killer
+      //                    .getKillMessage()
+      //                    .replaceAll("\\{0}", victim.getNameLegacy())
+      //                    .replaceAll("\\{1}", killer.getPrefixedName())
+      //                    .replaceAll("\\{2}", getArgs()[2].toString()));
+      //        //                        .replaceAll("\\{0}", getArgs()[0].toString())
+      //        //                        .replaceAll("\\{1}", getArgs()[1].toString()));
+      //
+      //        //        .replaceAll("\\{0}", victim.getNameLegacy())
+      //        //                    .replaceAll("\\{1}", killer.getNameLegacy()));
+      //      }
+    }
+
     return message;
   }
 
   Component[] getArgs() {
-    Component[] args = new Component[5];
+    Component[] args = new Component[6];
     args[0] = victim.getName(NameStyle.COLOR);
     args[1] = killer == null ? space() : killer.getName(NameStyle.COLOR);
     args[2] = weapon;
     args[3] = mob;
     args[4] = distance == null ? space() : text(distance);
+    args[5] =
+        this.killer != null
+                && killer.getPlayer().isPresent()
+                && killer.getPlayer().get().getKillMessage() != null
+            ? text(killer.getPlayer().get().getKillMessage())
+            : translatable("death.slain");
+
     return args;
   }
 
