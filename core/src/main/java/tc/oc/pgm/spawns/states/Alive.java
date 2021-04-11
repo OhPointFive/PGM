@@ -141,7 +141,7 @@ public class Alive extends Participating {
 
     playDeathEffect(killer);
 
-    transition(new Dead(smm, player));
+    transition(new Dead(smm, player, killer));
   }
 
   private void playDeathEffect(@Nullable ParticipantState killer) {
