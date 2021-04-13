@@ -141,6 +141,7 @@ public class AutoJoinMatchModule implements MatchModule, Listener {
 
   private void scheduleJoin(final MatchPlayer player, @Nullable final Team team) {
     if (team == player.getParty() || (team == null && hasJoined(player))) return;
+    if (!settingEnabled(player)) return;
 
     final Player bukkit = player.getBukkit();
     match
@@ -151,7 +152,7 @@ public class AutoJoinMatchModule implements MatchModule, Listener {
                 match.needModule(JoinMatchModule.class).join(player, team);
               }
             },
-            500,
+            3000,
             TimeUnit.MICROSECONDS);
   }
 }
