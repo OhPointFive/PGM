@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.bukkit.entity.Player;
@@ -148,11 +149,11 @@ public class AutoJoinMatchModule implements MatchModule, Listener {
         .getExecutor(MatchScope.LOADED)
         .schedule(
             () -> {
-              if (bukkit.isOnline()) {
+              if (bukkit.isOnline() && settingEnabled(player)) {
                 match.needModule(JoinMatchModule.class).join(player, team);
               }
             },
-            3000,
+            (long)(new Random().nextDouble() * 500),
             TimeUnit.MICROSECONDS);
   }
 }
