@@ -43,7 +43,7 @@ import tc.oc.pgm.util.text.TextTranslations;
 public class AntiGriefListener implements Listener {
 
   private static final Material DEFUSE_ITEM = Material.SHEARS;
-  private static final int DEFUSE_SLOT = 4;
+  private static final int DEFUSE_SLOT = 5;
 
   private static final Sound DEFUSE_SOUND = sound(key("random.fizz"), Sound.Source.MASTER, 1, 1);
 
@@ -207,7 +207,7 @@ public class AntiGriefListener implements Listener {
                     "moderation.defuse.tooltip", event.getPlayer().getBukkit())));
     shears.setItemMeta(meta);
 
-    event.getPlayer().getBukkit().getInventory().setItem(DEFUSE_SLOT, shears);
+//    event.getPlayer().getBukkit().getInventory().setItem(DEFUSE_SLOT, shears);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
