@@ -153,7 +153,7 @@ public class AutoJoinMatchModule implements MatchModule, Listener {
                 match.needModule(JoinMatchModule.class).join(player, team);
               }
             },
-            (long)(new Random().nextDouble() * 500),
+            (long) (new Random().nextDouble() * 500),
             TimeUnit.MICROSECONDS);
   }
 }
