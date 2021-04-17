@@ -207,7 +207,7 @@ public class AntiGriefListener implements Listener {
                     "moderation.defuse.tooltip", event.getPlayer().getBukkit())));
     shears.setItemMeta(meta);
 
-//    event.getPlayer().getBukkit().getInventory().setItem(DEFUSE_SLOT, shears);
+    //    event.getPlayer().getBukkit().getInventory().setItem(DEFUSE_SLOT, shears);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
