@@ -158,6 +158,14 @@ public class PGMListener implements Listener {
     MatchPlayer player = this.mm.getPlayer(event.getPlayer());
     if (player == null) return;
 
+    if (event.getQuitMessage() != null) {
+      // Announce actual staff quit
+      announceJoinOrLeave(player, false, vm.isVanished(player.getId()));
+      if (!PGM.get().getConfiguration().showQuitMessages()) {
+        event.setQuitMessage(null);
+      }
+    }
+
     player.getMatch().removePlayer(event.getPlayer());
   }
 

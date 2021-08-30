@@ -94,6 +94,7 @@ public final class PGMConfig implements Config {
   private final boolean statsShowBest;
   private final boolean statsShowOwn;
   private final int verboseItemSlot;
+  private final boolean quitMessages;
 
   // sidebar.*
   private final Component header;
@@ -200,6 +201,8 @@ public final class PGMConfig implements Config {
     this.statsShowBest = parseBoolean(config.getString("stats.show-best", "true"));
     this.statsShowOwn = parseBoolean(config.getString("stats.show-own", "true"));
     this.verboseItemSlot = parseInteger(config.getString("stats.item-slot", "7"));
+
+    this.quitMessages = parseBoolean(config.getString("ui.quit-messages", "false"));
 
     final String header = config.getString("sidebar.header");
     this.header = header == null || header.isEmpty() ? null : parseComponent(header);
@@ -625,6 +628,11 @@ public final class PGMConfig implements Config {
   @Override
   public int getVerboseItemSlot() {
     return verboseItemSlot;
+  }
+
+  @Override
+  public boolean showQuitMessages() {
+    return quitMessages;
   }
 
   @Override
