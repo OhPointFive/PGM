@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import tc.oc.pgm.api.PGM;
 import tc.oc.pgm.api.Permissions;
 import tc.oc.pgm.api.integration.Integration;
 import tc.oc.pgm.api.match.MatchManager;
@@ -45,7 +46,9 @@ public class JoinLeaveAnnouncer implements Listener {
     if (player == null) return;
 
     if (event.getQuitMessage() != null) {
-      event.setQuitMessage(null);
+      if (!PGM.get().getConfiguration().showQuitMessages()) {
+        event.setQuitMessage(null);
+      }
       leave(player, JoinVisibility.get(player));
     }
   }
