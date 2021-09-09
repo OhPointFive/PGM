@@ -196,8 +196,6 @@ public class NMSHacks1_8 extends NMSHacksNoOp {
     Object teleport = teleportEntityPacket(player.getEntityId(), location);
 
     sendPacketToViewers(player, metadata, true);
-    sendPacketToViewers(player, useBed, true);
-    sendPacketToViewers(player, teleport, true);
   }
 
   @Override
