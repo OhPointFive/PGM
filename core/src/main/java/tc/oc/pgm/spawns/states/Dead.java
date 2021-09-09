@@ -28,7 +28,7 @@ import tc.oc.pgm.util.nms.NMSHacks;
 
 /** Player is waiting to respawn after dying in-game */
 public class Dead extends Spawning {
-  private static final long CORPSE_ROT_TICKS = 20;
+  private static final long CORPSE_ROT_TICKS = 0;
 
   private static final PotionEffect CONFUSION =
       new PotionEffect(PotionEffectType.CONFUSION, 100, 0, true, false);
