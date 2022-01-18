@@ -33,6 +33,7 @@ public class PlayerStats {
   private int flagsCaptured;
 
   private Duration longestFlagHold = Duration.ZERO;
+  private Duration totalFlagHold = Duration.ZERO;
   private Instant longestFlagHoldCache;
 
   // The task responsible for displaying the stats over the hotbar
@@ -81,13 +82,23 @@ public class PlayerStats {
   }
 
   protected void onFlagDrop() {
-    setLongestFlagHold(
-        Duration.ofMillis(Instant.now().toEpochMilli() - longestFlagHoldCache.toEpochMilli()));
+    Duration time =
+        Duration.ofMillis(Instant.now().toEpochMilli() - longestFlagHoldCache.toEpochMilli());
+    setLongestFlagHold(time);
+    addTotalFlagHold(time);
   }
 
   protected void setLongestFlagHold(Duration time) {
     if (longestFlagHold == null || (time.toNanos() - longestFlagHold.toNanos()) > 0)
       longestFlagHold = time;
+  }
+
+  protected void addTotalFlagHold(Duration time) {
+    if (totalFlagHold == null) {
+      totalFlagHold = time;
+    } else {
+      totalFlagHold = totalFlagHold.plus(time);
+    }
   }
 
   protected void setLongestBowKill(double distance) {
@@ -174,6 +185,10 @@ public class PlayerStats {
 
   public int getFlagsCaptured() {
     return flagsCaptured;
+  }
+
+  public Duration getTotalFlagHold() {
+    return totalFlagHold;
   }
 
   public Duration getLongestFlagHold() {
