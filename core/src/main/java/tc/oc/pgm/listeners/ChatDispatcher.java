@@ -383,6 +383,8 @@ public class ChatDispatcher implements Listener {
     event.getRecipients().stream()
         .map(Audience::get)
         .forEach(player -> player.sendMessage(senderId, componentMsg));
+
+    Audience.console().sendMessage(senderId, componentMsg);
   }
 
   private void throwMuted(MatchPlayer player) {
