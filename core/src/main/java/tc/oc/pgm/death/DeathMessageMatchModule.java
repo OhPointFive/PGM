@@ -16,6 +16,7 @@ import tc.oc.pgm.api.player.MatchPlayer;
 import tc.oc.pgm.api.player.event.MatchPlayerDeathEvent;
 import tc.oc.pgm.api.setting.SettingKey;
 import tc.oc.pgm.events.ListenerScope;
+import tc.oc.pgm.util.Audience;
 
 @ListenerScope(MatchScope.RUNNING)
 public class DeathMessageMatchModule implements MatchModule, Listener {
@@ -37,6 +38,8 @@ public class DeathMessageMatchModule implements MatchModule, Listener {
 
     DeathMessageBuilder builder = new DeathMessageBuilder(event, logger);
     Component message = builder.getMessage().color(NamedTextColor.GRAY);
+
+    Audience.console().sendMessage(message);
 
     for (MatchPlayer viewer : event.getMatch().getPlayers()) {
       switch (viewer.getSettings().getValue(SettingKey.DEATH)) {
