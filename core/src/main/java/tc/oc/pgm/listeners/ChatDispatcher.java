@@ -354,49 +354,6 @@ public class ChatDispatcher implements Listener {
             .map(MatchPlayer::getBukkit)
             .collect(Collectors.toSet());
 
-    if (sender != null) {
-      PGM.get()
-          .getAsyncExecutor()
-          .execute(
-              () -> {
-                final AsyncPlayerChatEvent event =
-                    new AsyncPlayerChatEvent(
-                        false,
-                        sender.getBukkit(),
-                        message,
-                        match.getPlayers().stream()
-                            .filter(filter)
-                            .map(MatchPlayer::getBukkit)
-                            .collect(Collectors.toSet()));
-                event.setFormat(format);
-                CHAT_EVENT_CACHE.put(event, true);
-                match.callEvent(event);
-
-                if (event.isCancelled()) {
-                  return;
-                }
-
-                event.getRecipients().stream()
-                    .map(Audience::get)
-                    .forEach(player -> player.sendMessage(identity(sender.getId()), componentMsg));
-
-                Audience.console().sendMessage(identity(sender.getId()), componentMsg);
-              });
-      return;
-    }
-    match.getPlayers().stream()
-        .filter(filter)
-        .forEach(
-            player ->
-                player.sendMessage(
-                    text(
-                        String.format(
-                            format,
-                            translate(
-                                UsernameFormatUtils.CONSOLE_NAME,
-                                TextTranslations.getLocale(player.getBukkit())),
-                            message))));
-
     PGM.get()
         .getAsyncExecutor()
         .execute(() -> asyncSendChat(match, sender, message, format, componentMsg, players));
@@ -421,6 +378,8 @@ public class ChatDispatcher implements Listener {
     event.getRecipients().stream()
         .map(Audience::get)
         .forEach(player -> player.sendMessage(senderId, componentMsg));
+
+    Audience.console().sendMessage(identity(sender.getId()), componentMsg);
   }
 
   private void throwMuted(MatchPlayer player) {
