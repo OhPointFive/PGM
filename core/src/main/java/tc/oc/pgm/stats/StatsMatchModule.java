@@ -2,7 +2,6 @@ package tc.oc.pgm.stats;
 
 import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
-import static net.kyori.adventure.text.event.HoverEvent.showText;
 import static tc.oc.pgm.util.player.PlayerComponent.player;
 import static tc.oc.pgm.util.text.NumberComponent.number;
 

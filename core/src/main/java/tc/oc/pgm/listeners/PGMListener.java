@@ -211,7 +211,7 @@ public class PGMListener implements Listener {
       SettingValue option = viewer.getSettings().getValue(SettingKey.JOIN);
       if (option.equals(SettingValue.JOIN_ON)) {
         Component component =
-            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.CONCISE));
+            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.FANCY));
         //        viewer.sendMessage(
         //            staffOnly
         //                ?
