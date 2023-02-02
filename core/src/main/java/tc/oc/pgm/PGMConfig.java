@@ -161,12 +161,16 @@ public final class PGMConfig implements Config {
     this.mapPoolFile =
         mapPoolFile == null || mapPoolFile.isEmpty()
             ? null
-            : new File(dataFolder, mapPoolFile).getAbsolutePath();
+            : mapPoolFile.startsWith("/")
+                ? new File(mapPoolFile).getAbsolutePath()
+                : new File(dataFolder, mapPoolFile).getAbsolutePath();
     final String includesDirectory = config.getString("map.includes");
     this.includesDirectory =
         includesDirectory == null || includesDirectory.isEmpty()
             ? null
-            : new File(dataFolder, includesDirectory).getAbsolutePath();
+            : includesDirectory.startsWith("/")
+                ? new File(includesDirectory).getAbsolutePath()
+                : new File(dataFolder, includesDirectory).getAbsolutePath();
 
     this.startTime = parseDuration(config.getString("countdown.start", "30s"));
     this.huddleTime = parseDuration(config.getString("countdown.huddle", "0s"));
