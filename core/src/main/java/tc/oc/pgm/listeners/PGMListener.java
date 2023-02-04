@@ -160,7 +160,7 @@ public class PGMListener implements Listener {
 
     if (event.getQuitMessage() != null) {
       // Announce actual staff quit
-      announceJoinOrLeave(player, false, vm.isVanished(player.getId()));
+      announceJoinOrLeave(player, false, false);
       if (!PGM.get().getConfiguration().showQuitMessages()) {
         event.setQuitMessage(null);
       }
@@ -197,7 +197,7 @@ public class PGMListener implements Listener {
       SettingValue option = viewer.getSettings().getValue(SettingKey.JOIN);
       if (option.equals(SettingValue.JOIN_ON)) {
         Component component =
-            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.FANCY));
+            translatable(key, NamedTextColor.YELLOW, player.getName(NameStyle.PLAIN));
         //        viewer.sendMessage(
         //            staffOnly
         //                ?
