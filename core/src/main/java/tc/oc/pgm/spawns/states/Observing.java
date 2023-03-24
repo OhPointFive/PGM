@@ -9,11 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.Door;
 import org.bukkit.permissions.PermissionAttachment;
 import tc.oc.pgm.api.Config;
 import tc.oc.pgm.api.PGM;
@@ -32,7 +29,18 @@ public class Observing extends State {
   // A set of item types which, when used to interact with the match environment by non-playing
   // users, can potentially cause client-server de-sync
   private static final Set<Material> BAD_TYPES =
-      EnumSet.of(Material.WATER_LILY, Material.BUCKET, Material.LAVA_BUCKET, Material.WATER_BUCKET);
+      EnumSet.of(
+          Material.WATER_LILY,
+          Material.BUCKET,
+          Material.LAVA_BUCKET,
+          Material.WATER_BUCKET,
+          Material.WOOD_DOOR,
+          Material.IRON_DOOR,
+          Material.ACACIA_DOOR_ITEM,
+          Material.JUNGLE_DOOR_ITEM,
+          Material.DARK_OAK_DOOR_ITEM,
+          Material.SPRUCE_DOOR_ITEM,
+          Material.BIRCH_DOOR_ITEM);
 
   private static final double VOID_HEIGHT = -64;
 
@@ -132,15 +140,11 @@ public class Observing extends State {
   }
 
   @Override
-  public void onEvent(InventoryClickEvent event) {
+  public void onEvent(InventoryCloseEvent event) {
     super.onEvent(event);
 
-    if (!(event.getClickedInventory() instanceof PlayerInventory) || event.getCursor() == null)
-      return;
-
-    ItemStack item = event.getCursor();
-    if (BAD_TYPES.contains(item.getType()) || item.getData() instanceof Door) {
-      event.setCancelled(true);
+    for (Material badType : BAD_TYPES) {
+      event.getActor().getInventory().remove(badType);
     }
   }
 }
