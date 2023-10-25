@@ -41,9 +41,7 @@ public class ScoreboardModule implements MapModule<ScoreboardMatchModule> {
       if (elScoreboard != null) {
         belowName =
             XMLUtils.parseEnum(
-                elScoreboard.getAttribute("below-name"),
-                ScoreboardDisplayItem.class,
-                "scoreboard display item");
+                elScoreboard.getAttribute("below-name"), ScoreboardDisplayItem.class);
       }
 
       return new ScoreboardModule(belowName);
