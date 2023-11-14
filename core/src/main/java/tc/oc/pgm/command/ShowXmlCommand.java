@@ -40,7 +40,7 @@ public final class ShowXmlCommand {
 
   private static final ShowXmlCommand INSTANCE = new ShowXmlCommand();
 
-  private final boolean mayEnable = Desktop.isDesktopSupported();
+  private final boolean mayEnable = false;
   private byte[] serverIp = null;
   private String serverHostname = null;
 
