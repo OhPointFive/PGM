@@ -28,7 +28,13 @@ public interface Materials {
   Material SIGN = parse("SIGN", "OAK_SIGN");
   Material SKULL = parse("SKULL_ITEM", "SKELETON_SKULL");
   Material PLAYER_HEAD = parse("SKULL_ITEM", "PLAYER_HEAD");
-  Material WOOD_DOOR = parse("WOOD_DOOR", "OAK_DOOR");
+  Material WOOD_DOOR_ITEM = parse("WOOD_DOOR", "OAK_DOOR");
+  Material ACACIA_DOOR_ITEM = parse("ACACIA_DOOR_ITEM", "ACACIA_DOOR");
+  Material JUNGLE_DOOR_ITEM = parse("JUNGLE_DOOR_ITEM", "JUNGLE_DOOR");
+  Material DARK_OAK_DOOR_ITEM = parse("DARK_OAK_DOOR_ITEM", "DARK_OAK_DOOR");
+  Material SPRUCE_DOOR_ITEM = parse("SPRUCE_DOOR_ITEM", "SPRUCE_DOOR");
+  Material BIRCH_DOOR_ITEM = parse("BIRCH_DOOR_ITEM", "BIRCH_DOOR");
+  Material IRON_DOOR_ITEM = parse("IRON_DOOR", "IRON_DOOR_BLOCK");
   Material BOOK_AND_QUILL = parse("BOOK_AND_QUILL", "WRITABLE_BOOK");
   Material EYE_OF_ENDER = parse("EYE_OF_ENDER", "ENDER_EYE");
   Material FIREWORK = parse("FIREWORK", "FIREWORK_ROCKET");
