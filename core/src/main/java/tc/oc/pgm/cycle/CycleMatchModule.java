@@ -14,7 +14,6 @@ import tc.oc.pgm.api.match.MatchScope;
 import tc.oc.pgm.api.match.event.MatchFinishEvent;
 import tc.oc.pgm.events.ListenerScope;
 import tc.oc.pgm.events.PlayerLeaveMatchEvent;
-import tc.oc.pgm.events.PlayerPartyChangeEvent;
 import tc.oc.pgm.restart.RestartManager;
 
 @ListenerScope(MatchScope.LOADED)
@@ -41,17 +40,6 @@ public class CycleMatchModule implements MatchModule, Listener {
     CycleCountdown countdown = new CycleCountdown(match);
     match.getCountdown().start(countdown, duration);
     this.bossbar = countdown.getBossBar();
-  }
-
-  @EventHandler(priority = EventPriority.MONITOR)
-  public void onPartyChange(PlayerPartyChangeEvent event) {
-    if (event.wasParticipating()
-        && match.isRunning()
-        && match.getParticipants().size() < PGM.get().getConfiguration().getMinimumPlayers()) {
-      match.getLogger().info("Cycling due to empty match");
-      match.finish();
-      startCountdown(null);
-    }
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
