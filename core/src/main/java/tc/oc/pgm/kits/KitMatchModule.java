@@ -18,6 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
 import tc.oc.pgm.api.PGM;
 import tc.oc.pgm.api.match.Match;
 import tc.oc.pgm.api.match.MatchModule;
@@ -40,6 +42,11 @@ public class KitMatchModule implements MatchModule, Listener {
   public KitMatchModule(Match match, Set<KitRule> kitRules) {
     this.match = match;
     this.kitRules = kitRules;
+  }
+
+  @NotNull
+  public Set<KitRule> getKitRules() {
+    return kitRules;
   }
 
   @Override
