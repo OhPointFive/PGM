@@ -48,7 +48,7 @@ dependencies {
 }
 
 group = "tc.oc.pgm"
-version = "0.16-SNAPSHOT"
+version = "0.16-SNAPSHOT-Stratus"
 description = "The original PvP Game Manager for Minecraft"
 
 tasks {
