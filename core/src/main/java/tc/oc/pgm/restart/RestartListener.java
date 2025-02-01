@@ -14,7 +14,6 @@ import tc.oc.pgm.api.match.MatchManager;
 import tc.oc.pgm.api.match.event.MatchFinishEvent;
 import tc.oc.pgm.api.match.event.MatchLoadEvent;
 import tc.oc.pgm.countdowns.SingleCountdownContext;
-import tc.oc.pgm.events.PlayerPartyChangeEvent;
 import tc.oc.pgm.util.ClassLogger;
 
 public class RestartListener implements Listener {
@@ -32,17 +31,6 @@ public class RestartListener implements Listener {
     this.logger = ClassLogger.get(plugin.getLogger(), getClass());
   }
 
-  private void attemptMatchEnd(Match match) {
-    if (this.deferral == null) return;
-
-    if (match.isRunning()) {
-      if (match.getParticipants().isEmpty()) {
-        this.logger.info("Ending empty match due to restart request");
-        match.finish();
-      }
-    }
-  }
-
   @EventHandler
   public void onRequestRestart(RequestRestartEvent event) {
     if (this.plugin.getServer().getOnlinePlayers().isEmpty()) {
@@ -52,16 +40,13 @@ public class RestartListener implements Listener {
       Match match = iterator.hasNext() ? iterator.next() : null;
       if (match != null) {
         this.deferral = event.defer(this.plugin);
-        if (match.isRunning()) {
-          attemptMatchEnd(match);
-        } else {
+        if (!match.isRunning()) {
           SingleCountdownContext ctx = (SingleCountdownContext) match.getCountdown();
           ctx.cancelAll();
 
-          Duration countdownTime =
-              RestartManager.getCountdown() != null
-                  ? RestartManager.getCountdown()
-                  : PGM.get().getConfiguration().getRestartTime();
+          Duration countdownTime = RestartManager.getCountdown() != null
+              ? RestartManager.getCountdown()
+              : PGM.get().getConfiguration().getRestartTime();
           this.logger.info("Starting restart countdown from " + countdownTime);
           ctx.start(new RestartCountdown(match), countdownTime);
         }
@@ -89,11 +74,6 @@ public class RestartListener implements Listener {
     if (RestartManager.isQueued()) {
       this.plugin.getServer().getPluginManager().callEvent(new RequestRestartEvent());
     }
-  }
-
-  @EventHandler
-  public void onPartyChange(PlayerPartyChangeEvent event) {
-    attemptMatchEnd(event.getMatch());
   }
 
   @EventHandler
