@@ -4,11 +4,9 @@ import static net.kyori.adventure.text.Component.translatable;
 import static tc.oc.pgm.util.bukkit.InventoryViewUtil.INVENTORY_VIEW;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,13 +21,11 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import tc.oc.pgm.api.Permissions;
 import tc.oc.pgm.api.match.MatchManager;
 import tc.oc.pgm.api.player.MatchPlayer;
 import tc.oc.pgm.api.player.ParticipantState;
 import tc.oc.pgm.channels.ChatManager;
-import tc.oc.pgm.spawns.events.ObserverKitApplyEvent;
 import tc.oc.pgm.tnt.TNTMatchModule;
 import tc.oc.pgm.tracker.Trackers;
 import tc.oc.pgm.util.bukkit.Sounds;
@@ -38,12 +34,10 @@ import tc.oc.pgm.util.material.Materials;
 import tc.oc.pgm.util.named.NameStyle;
 import tc.oc.pgm.util.text.MinecraftComponent;
 import tc.oc.pgm.util.text.TextFormatter;
-import tc.oc.pgm.util.text.TextTranslations;
 
 public class AntiGriefListener implements Listener {
 
   private static final Material DEFUSE_ITEM = Material.SHEARS;
-  private static final int DEFUSE_SLOT = 4;
 
   private final MatchManager mm;
 
@@ -175,28 +169,6 @@ public class AntiGriefListener implements Listener {
       }
     }
     return uniqueOwners;
-  }
-
-  @EventHandler
-  public void giveKit(final ObserverKitApplyEvent event) {
-    if (event.getPlayer().getParty() == null) return;
-    if (!event.getPlayer().getParty().isObserving()
-        || !event.getPlayer().getBukkit().hasPermission(Permissions.DEFUSE)) return;
-
-    ItemStack shears = new ItemStack(DEFUSE_ITEM);
-
-    // TODO: Update information if locale changes
-    ItemMeta meta = shears.getItemMeta();
-    meta.setDisplayName(ChatColor.RED
-        + ChatColor.BOLD.toString()
-        + TextTranslations.translate(
-            "moderation.defuse.displayName", event.getPlayer().getBukkit()));
-    meta.setLore(Collections.singletonList(ChatColor.GRAY
-        + TextTranslations.translate(
-            "moderation.defuse.tooltip", event.getPlayer().getBukkit())));
-    shears.setItemMeta(meta);
-
-    event.getPlayer().getBukkit().getInventory().setItem(DEFUSE_SLOT, shears);
   }
 
   @EventHandler(priority = EventPriority.MONITOR)
