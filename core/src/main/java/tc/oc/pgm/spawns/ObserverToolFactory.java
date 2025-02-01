@@ -26,21 +26,19 @@ public class ObserverToolFactory {
 
   public ItemStack getTeleportTool(Player player) {
     return new ItemBuilder()
-        .material(Material.COMPASS)
-        .name(
-            ChatColor.BLUE.toString()
-                + ChatColor.BOLD
-                + TextTranslations.translate("misc.teleportTool", player))
+        .material(Material.ENDER_PEARL)
+        .name(ChatColor.BLUE.toString()
+            + ChatColor.BOLD
+            + TextTranslations.translate("misc.teleportTool", player))
         .build();
   }
 
   public ItemStack getEditWand(Player player) {
     return new ItemBuilder()
         .material(Material.RABBIT_FOOT)
-        .name(
-            ChatColor.DARK_PURPLE.toString()
-                + ChatColor.BOLD
-                + TextTranslations.translate("misc.editWand", player))
+        .name(ChatColor.DARK_PURPLE.toString()
+            + ChatColor.BOLD
+            + TextTranslations.translate("misc.editWand", player))
         .build();
   }
 

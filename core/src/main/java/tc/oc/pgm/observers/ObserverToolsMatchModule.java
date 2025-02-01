@@ -35,7 +35,7 @@ public class ObserverToolsMatchModule implements MatchModule, Listener {
   }
 
   public static final int TOOL_SLOT = 8;
-  public static final Material TOOL_MATERIAL = Material.DIAMOND;
+  public static final Material TOOL_MATERIAL = Material.BOOK;
   public static final Component TOOL_NAME =
       translatable("setting.displayName", NamedTextColor.AQUA, TextDecoration.BOLD);
   public static final Component TOOL_LORE = translatable("setting.lore", NamedTextColor.GRAY);
