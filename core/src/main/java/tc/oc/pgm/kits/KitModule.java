@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import tc.oc.pgm.action.ActionModule;
 import tc.oc.pgm.api.feature.FeatureDefinition;
