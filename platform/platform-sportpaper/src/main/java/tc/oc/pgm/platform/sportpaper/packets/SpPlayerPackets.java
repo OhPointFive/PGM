@@ -9,7 +9,6 @@ import java.util.List;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.DataWatcher;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutBed;
 import net.minecraft.server.v1_8_R3.PacketPlayOutCollect;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityVelocity;
@@ -59,8 +58,6 @@ public class SpPlayerPackets implements PlayerPackets, PacketSender {
     BlockPosition pos = new BlockPosition(location.getX(), location.getY(), location.getZ());
 
     sendToViewers(noHealthMeta, player, true);
-    sendToViewers(new PacketPlayOutBed(handle, pos), player, true);
-    ENTITIES.teleportEntityPacket(player.getEntityId(), location).sendToViewers(player, true);
   }
 
   @Override
