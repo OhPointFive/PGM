@@ -7,12 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.Door;
 import tc.oc.pgm.api.match.event.MatchStartEvent;
 import tc.oc.pgm.api.party.Competitor;
 import tc.oc.pgm.api.player.MatchPlayer;
@@ -131,17 +127,11 @@ public class Observing extends State {
   }
 
   @Override
-  public void onEvent(InventoryClickEvent event) {
+  public void onEvent(InventoryCloseEvent event) {
     super.onEvent(event);
 
-    var inv = event.getInventory();
-    if (inv == null
-        || !(inv instanceof PlayerInventory || inv.getType() == InventoryType.CRAFTING)
-        || event.getCursor() == null) return;
-
-    ItemStack item = event.getCursor();
-    if (BAD_TYPES.contains(item.getType()) || item.getData() instanceof Door) {
-      event.setCancelled(true);
+    for (Material type : BAD_TYPES) {
+      event.getPlayer().getInventory().remove(type);
     }
   }
 }

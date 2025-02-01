@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.jetbrains.annotations.Nullable;
 import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 import tc.oc.pgm.api.PGM;
@@ -250,6 +251,15 @@ public class SpawnMatchModule implements MatchModule, Listener, Tickable {
   @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
   public void onInventoryClick(final InventoryClickEvent event) {
     MatchPlayer player = match.getPlayer(event.getWhoClicked());
+    if (player != null) {
+      State state = states.get(player);
+      if (state != null) state.onEvent(event);
+    }
+  }
+
+  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  public void onInventoryClose(final InventoryCloseEvent event) {
+    MatchPlayer player = match.getPlayer(event.getPlayer());
     if (player != null) {
       State state = states.get(player);
       if (state != null) state.onEvent(event);
