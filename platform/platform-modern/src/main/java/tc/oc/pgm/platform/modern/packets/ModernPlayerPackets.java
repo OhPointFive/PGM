@@ -4,6 +4,7 @@ import static tc.oc.pgm.util.nms.Packets.ENTITIES;
 import static tc.oc.pgm.util.platform.Supports.Variant.PAPER;
 
 import com.mojang.datafixers.util.Pair;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,7 @@ import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import tc.oc.pgm.util.bukkit.ViaUtils;
 import tc.oc.pgm.util.nms.packets.PlayerPackets;
 import tc.oc.pgm.util.platform.Supports;
@@ -88,5 +90,17 @@ public class ModernPlayerPackets implements PlayerPackets, PacketSender {
     var handle = ((CraftPlayer) player).getHandle();
     handle.hurtMarked = false;
     handle.connection.sendPacket(new ClientboundSetEntityMotionPacket(handle));
+  }
+
+  @Override
+  public void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      ItemStack item,
+      int count,
+      Duration duration) {
+    // I don't need to support this in modern versions
+    return;
   }
 }
