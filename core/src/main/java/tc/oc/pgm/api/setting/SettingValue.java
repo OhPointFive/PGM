@@ -10,6 +10,9 @@ import org.bukkit.DyeColor;
  * @see SettingKey
  */
 public enum SettingValue {
+  AUTOJOIN_ON("autojoin", "on", DyeColor.GREEN), // Automatically join teams
+  AUTOJOIN_OFF("autojoin", "off", DyeColor.RED), // Don't automatically join teams
+
   CHAT_TEAM("chat", "team", DyeColor.GREEN), // Only send to members on the player's team
   CHAT_GLOBAL("chat", "global", DyeColor.ORANGE), // Send to all players in the same match
   CHAT_ADMIN("chat", "admin", DyeColor.RED), // Send to all server operators
