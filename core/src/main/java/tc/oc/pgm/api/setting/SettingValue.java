@@ -26,10 +26,6 @@ public enum SettingValue {
   PICKER_ON("picker", "on", DyeColor.GREEN), // Display the picker GUI always
   PICKER_OFF("picker", "off", DyeColor.RED), // Never display the picker GUI
 
-  JOIN_ON("join", "all", DyeColor.ORANGE), // Send all join messages
-  JOIN_FRIENDS("join", "friends", DyeColor.GREEN), // Only send friend join messages
-  JOIN_OFF("join", "none", DyeColor.RED), // Never send join messages
-
   MESSAGE_ON("message", "all", DyeColor.GREEN), // Always accept direct messages
   MESSAGE_FRIEND("message", "friends", DyeColor.YELLOW), // Only accept friend direct messages
   MESSAGE_OFF("message", "none", DyeColor.RED), // Never accept direct messages

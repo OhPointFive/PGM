@@ -261,6 +261,13 @@ public interface Config {
   boolean useLegacyFlagBeams();
 
   /**
+   * Gets whether to show quit messages
+   *
+   * @return If quit messages are enabled
+   */
+  boolean showQuitMessages();
+
+  /**
    * Gets whether to show a more verbose representation of the match stats at the end of each match
    *
    * @return If verbose stats at the end of the match is enabled

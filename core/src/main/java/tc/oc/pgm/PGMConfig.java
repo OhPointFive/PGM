@@ -111,6 +111,7 @@ public final class PGMConfig implements Config {
   private final boolean statsShowBest;
   private final boolean statsShowOwn;
   private final int verboseItemSlot;
+  private final boolean quitMessages;
 
   // sidebar.*
   private final Component header;
@@ -214,6 +215,7 @@ public final class PGMConfig implements Config {
         parseBoolean(config.getString("ui.participants-see-observers", "true"));
     this.showFireworks = parseBoolean(config.getString("ui.fireworks", "true"));
     this.flagBeams = parseBoolean(config.getString("ui.flag-beams", "false"));
+    this.quitMessages = parseBoolean(config.getString("ui.quit-messages", "true"));
 
     this.verboseStats = parseBoolean(config.getString("stats.verbose", "true"));
     this.statsShowAfter = parseDuration(config.getString("stats.show-after", "6s"));
@@ -648,6 +650,11 @@ public final class PGMConfig implements Config {
   @Override
   public boolean useLegacyFlagBeams() {
     return flagBeams;
+  }
+
+  @Override
+  public boolean showQuitMessages() {
+    return quitMessages;
   }
 
   public boolean showVerboseStats() {
