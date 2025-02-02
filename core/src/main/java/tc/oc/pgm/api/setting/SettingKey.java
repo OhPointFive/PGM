@@ -46,12 +46,6 @@ public enum SettingKey implements Aliased {
       PICKER_ON,
       PICKER_OFF,
       PICKER_MANUAL), // Changes when the picker is displayed
-  JOIN(
-      Arrays.asList("join", "jms"),
-      Materials.WOOD_DOOR_ITEM,
-      JOIN_ON,
-      JOIN_FRIENDS,
-      JOIN_OFF), // Changes if join messages are seen
   MESSAGE(
       Arrays.asList("message", "dm"),
       Materials.BOOK_AND_QUILL,

@@ -28,6 +28,7 @@ import tc.oc.pgm.api.party.event.CompetitorRemoveEvent;
 import tc.oc.pgm.api.player.MatchPlayer;
 import tc.oc.pgm.api.setting.SettingKey;
 import tc.oc.pgm.api.setting.SettingValue;
+import tc.oc.pgm.controlpoint.ControlPoint;
 import tc.oc.pgm.events.ListenerScope;
 import tc.oc.pgm.ffa.FreeForAllMatchModule;
 import tc.oc.pgm.goals.events.GoalCompleteEvent;
@@ -163,6 +164,8 @@ public class GoalMatchModule implements MatchModule, Listener {
   @EventHandler
   public void onComplete(GoalCompleteEvent event) {
     updateProgress(event.getGoal());
+
+    if (event.getGoal() instanceof ControlPoint) return; // Stratus early return to disable sounds
 
     // Don't play the objective sound if the match is over, because the win/lose sound will play
     // instead
