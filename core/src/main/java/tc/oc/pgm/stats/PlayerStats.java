@@ -59,6 +59,7 @@ public class PlayerStats implements StatHolder {
   private int woolsTouched;
 
   private Duration longestFlagHold = Duration.ZERO;
+  private Duration totalFlagHold = Duration.ZERO;
   private Instant longestFlagHoldCache;
 
   // The task responsible for displaying the stats over the hotbar
@@ -128,7 +129,7 @@ public class PlayerStats implements StatHolder {
 
   protected void onFlagCapture() {
     flagsCaptured++;
-    onFlagDrop();
+    onFlagDrop(true);
     if (parent != null) parent.onFlagCapture();
   }
 
@@ -139,15 +140,26 @@ public class PlayerStats implements StatHolder {
   }
 
   protected void onFlagDrop() {
-    setLongestFlagHold(
-        Duration.ofMillis(Instant.now().toEpochMilli() - longestFlagHoldCache.toEpochMilli()));
-    if (parent != null) parent.onFlagDrop();
+    onFlagDrop(false);
+  }
+
+  protected void onFlagDrop(boolean skipParent) {
+    Duration time =
+        Duration.ofMillis(Instant.now().toEpochMilli() - longestFlagHoldCache.toEpochMilli());
+    setLongestFlagHold(time);
+    addTotalFlagHold(time);
+    if (!skipParent && parent != null) parent.onFlagDrop(false);
   }
 
   protected void setLongestFlagHold(Duration time) {
     if (longestFlagHold == null || (time.toNanos() - longestFlagHold.toNanos()) > 0)
       longestFlagHold = time;
     if (parent != null) parent.setLongestFlagHold(time);
+  }
+
+  protected void addTotalFlagHold(Duration time) {
+    totalFlagHold = totalFlagHold.plus(time);
+    // Not calling parent.addTotalFlagHold(time) because onFlagDrop already calls the parent
   }
 
   protected void onCoreLeak() {
@@ -290,6 +302,10 @@ public class PlayerStats implements StatHolder {
 
   public Duration getLongestFlagHold() {
     return longestFlagHold;
+  }
+
+  public Duration getTotalFlagHold() {
+    return totalFlagHold;
   }
 
   private void setHotbarTask(Future<?> task) {

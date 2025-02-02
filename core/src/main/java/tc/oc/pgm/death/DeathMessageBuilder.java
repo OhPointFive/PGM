@@ -89,8 +89,7 @@ public class DeathMessageBuilder {
     args[2] = weapon;
     args[3] = mob;
     args[4] = distance == null ? space() : text(distance);
-    args[5] =
-      killer != null
+    args[5] = killer != null
             && killer.getPlayer().isPresent()
             && killer.getPlayer().get().getKillMessage() != null
         ? text(killer.getPlayer().get().getKillMessage())
