@@ -4,21 +4,32 @@ import static net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder.EnumWorldBor
 import static tc.oc.pgm.util.nms.Packets.ENTITIES;
 import static tc.oc.pgm.util.platform.Supports.Variant.SPORTPAPER;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.DataWatcher;
+import net.minecraft.server.v1_8_R3.EntityItem;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutCollect;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityVelocity;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder;
 import net.minecraft.server.v1_8_R3.WorldBorder;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
+import tc.oc.pgm.util.TimeUtils;
 import tc.oc.pgm.util.bukkit.ViaUtils;
 import tc.oc.pgm.util.nms.packets.PlayerPackets;
 import tc.oc.pgm.util.platform.Supports;
@@ -89,5 +100,59 @@ public class SpPlayerPackets implements PlayerPackets, PacketSender {
     EntityPlayer handle = ((CraftPlayer) player).getHandle();
     handle.velocityChanged = false;
     handle.playerConnection.sendPacket(new PacketPlayOutEntityVelocity(handle));
+  }
+
+  @Override
+  public void showFakeItems(
+      Plugin plugin,
+      Player viewer,
+      Location location,
+      ItemStack item,
+      int count,
+      Duration duration) {
+    if (count <= 0) return;
+
+    final int[] entityIds = new int[count];
+
+    for (int i = 0; i < count; i++) {
+      Random random = new Random();
+      Vector velocity = new Vector(
+          random.nextDouble() - 0.5d, random.nextDouble() - 0.5d, random.nextDouble() - 0.5d);
+
+      EntityItem entity = new EntityItem(((CraftWorld) location.getWorld()).getHandle());
+      entity.setItemStack(CraftItemStack.asNMSCopy(item));
+      entity.setLocation(
+          location.getX(),
+          location.getY(),
+          location.getZ(),
+          location.getYaw(),
+          location.getPitch());
+      entity.motX = velocity.getX();
+      entity.motY = velocity.getY();
+      entity.motZ = velocity.getZ();
+
+      send(new PacketPlayOutSpawnEntity(entity, 2), viewer);
+      send(new PacketPlayOutEntityMetadata(entity.getId(), entity.getDataWatcher(), true), viewer);
+
+      entityIds[i] = entity.getId();
+    }
+
+    scheduleEntityDestroy(plugin, viewer.getUniqueId(), duration, entityIds);
+  }
+
+  private void scheduleEntityDestroy(
+      Plugin plugin, UUID viewerUuid, Duration delay, int[] entityIds) {
+    plugin
+        .getServer()
+        .getScheduler()
+        .runTaskLater(
+            plugin,
+            () -> {
+              final Player viewer = plugin.getServer().getPlayer(viewerUuid);
+              if (viewer != null) {
+                send(new PacketPlayOutEntityDestroy(entityIds), viewer);
+              }
+            },
+            TimeUtils.toTicks(delay));
   }
 }
