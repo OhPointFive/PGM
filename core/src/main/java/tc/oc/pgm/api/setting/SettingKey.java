@@ -21,6 +21,11 @@ import tc.oc.pgm.util.material.Materials;
  * @see SettingValue
  */
 public enum SettingKey implements Aliased {
+  AUTOJOIN(
+      Arrays.asList("autojoin", "auto"),
+      Material.STONE_SWORD,
+      AUTOJOIN_ON,
+      AUTOJOIN_OFF), // Changes if a match join automatically happens
   CHAT("chat", Materials.SIGN, CHAT_TEAM, CHAT_GLOBAL, CHAT_ADMIN) {
     @Override
     public void update(MatchPlayer player) {

@@ -117,12 +117,18 @@ public class PickerMatchModule implements MatchModule, Listener {
   private final boolean hasTeams;
   private final boolean hasClasses;
   private final boolean isBlitz;
+  private final boolean autoJoinEnabled;
 
   private PickerMatchModule(Match match) {
     this.match = match;
     this.hasTeams = match.hasModule(TeamMatchModule.class);
     this.hasClasses = match.hasModule(ClassMatchModule.class);
     this.isBlitz = match.hasModule(BlitzMatchModule.class);
+    this.autoJoinEnabled = PGM.get()
+        .getConfiguration()
+        .getExperiments()
+        .getOrDefault("auto-join", "false")
+        .equals(true);
   }
 
   protected boolean settingEnabled(MatchPlayer player, boolean playerTriggered) {
@@ -294,6 +300,7 @@ public class PickerMatchModule implements MatchModule, Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   public void join(PlayerJoinMatchEvent event) {
     final MatchPlayer player = event.getPlayer();
+    if (autoJoinEnabled) return;
     if (!settingEnabled(player, false)) return;
 
     if (canOpenWindow(player)) {
