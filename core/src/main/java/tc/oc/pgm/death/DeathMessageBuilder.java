@@ -83,12 +83,18 @@ public class DeathMessageBuilder {
   }
 
   Component[] getArgs() {
-    Component[] args = new Component[5];
+    Component[] args = new Component[6];
     args[0] = victim.getName(NameStyle.COLOR);
     args[1] = killer == null ? space() : killer.getName(NameStyle.COLOR);
     args[2] = weapon;
     args[3] = mob;
     args[4] = distance == null ? space() : text(distance);
+    args[5] =
+      killer != null
+            && killer.getPlayer().isPresent()
+            && killer.getPlayer().get().getKillMessage() != null
+        ? text(killer.getPlayer().get().getKillMessage())
+        : translatable("death.slain");
     return args;
   }
 

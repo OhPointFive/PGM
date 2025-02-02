@@ -182,6 +182,10 @@ public interface MatchPlayer
    */
   boolean canInteract();
 
+  String getKillMessage();
+
+  void setKillMessage(String killmessage);
+
   /**
    * Get whether the {@link MatchPlayer} can see another {@link MatchPlayer}.
    *

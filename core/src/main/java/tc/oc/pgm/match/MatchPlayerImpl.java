@@ -81,6 +81,7 @@ public class MatchPlayerImpl implements MatchPlayer, Comparable<MatchPlayer> {
   private final AtomicBoolean protocolReady;
   private final AtomicInteger protocolVersion;
   private final AfkTracker.Activity activity;
+  private String killMessage;
 
   public MatchPlayerImpl(Match match, Player player) {
     this.logger = ClassLogger.get(
@@ -201,6 +202,16 @@ public class MatchPlayerImpl implements MatchPlayer, Comparable<MatchPlayer> {
   @Override
   public boolean canInteract() {
     return isAlive() && !isFrozen();
+  }
+
+  @Override
+  public String getKillMessage() {
+    return killMessage;
+  }
+
+  @Override
+  public void setKillMessage(String killMessage) {
+    this.killMessage = killMessage;
   }
 
   @Override
