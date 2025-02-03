@@ -28,8 +28,18 @@ public class Observing extends State {
 
   // A set of item types which, when used to interact with the match environment by non-playing
   // users, can potentially cause client-server de-sync
-  private static final Set<Material> BAD_TYPES =
-      EnumSet.of(Materials.LILY_PAD, Material.BUCKET, Material.LAVA_BUCKET, Material.WATER_BUCKET);
+  private static final Set<Material> BAD_TYPES = EnumSet.of(
+      Materials.LILY_PAD,
+      Material.BUCKET,
+      Material.LAVA_BUCKET,
+      Material.WATER_BUCKET,
+      Materials.WOOD_DOOR_ITEM,
+      Materials.IRON_DOOR_ITEM,
+      Materials.ACACIA_DOOR_ITEM,
+      Materials.JUNGLE_DOOR_ITEM,
+      Materials.DARK_OAK_DOOR_ITEM,
+      Materials.SPRUCE_DOOR_ITEM,
+      Materials.BIRCH_DOOR_ITEM);
 
   private static final double VOID_HEIGHT = -64;
 
