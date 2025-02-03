@@ -206,7 +206,7 @@ public class Carried extends Spawned implements Missing {
       smm.incrementScore(
           this.getBeneficiary(this.flag.getDefinition().getOwner()),
           this.flag.getDefinition().getPointsPerSecond() / 20D,
-          ScoreCause.FLAG_TICK);
+          ScoreCause.FLAG_CARRIED_TICK);
     }
   }
 

@@ -47,7 +47,7 @@ public class Returned extends Uncarried implements Runnable {
       smm.incrementScore(
           this.flag.getMatch().needModule(TeamMatchModule.class).getTeam(this.post.getOwner()),
           this.post.getPointsPerSecond() / 20D,
-          ScoreCause.FLAG_TICK);
+          ScoreCause.FLAG_RETURNED_TICK);
     }
   }
 
