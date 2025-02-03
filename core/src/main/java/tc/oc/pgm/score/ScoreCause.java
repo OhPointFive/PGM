@@ -1,7 +1,9 @@
 package tc.oc.pgm.score;
 
 public enum ScoreCause {
-  CONTROL_POINT,
+  CONTROL_POINT_TICK,
+  CONTROL_POINT_OWNED,
+  CONTROL_POINT_LOST,
   DEATH,
   FLAG_CAPTURE,
   FLAG_TICK,

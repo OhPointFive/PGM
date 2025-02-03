@@ -276,7 +276,9 @@ public class ControlPoint extends SimpleGoal<ControlPointDefinition>
         float growth = this.getDefinition().getPointsGrowth();
         float rate = (float) (initial * Math.pow(2, seconds / growth));
         scoreMatchModule.incrementScore(
-            this.getControllingTeam(), rate * duration.toMillis() / 1000, ScoreCause.CONTROL_POINT);
+            this.getControllingTeam(),
+            rate * duration.toMillis() / 1000,
+            ScoreCause.CONTROL_POINT_TICK);
       }
     }
   }
@@ -374,11 +376,15 @@ public class ControlPoint extends SimpleGoal<ControlPointDefinition>
       if (scoreMatchModule != null) {
         if (oldControllingTeam != null) {
           scoreMatchModule.incrementScore(
-              oldControllingTeam, getDefinition().getPointsOwner() * -1, ScoreCause.CONTROL_POINT);
+              oldControllingTeam,
+              getDefinition().getPointsOwner() * -1,
+              ScoreCause.CONTROL_POINT_OWNED);
         }
         if (this.controllingTeam != null) {
           scoreMatchModule.incrementScore(
-              this.controllingTeam, getDefinition().getPointsOwner(), ScoreCause.CONTROL_POINT);
+              this.controllingTeam,
+              getDefinition().getPointsOwner(),
+              ScoreCause.CONTROL_POINT_LOST);
         }
       }
       if (this.controllingTeam == null) {
