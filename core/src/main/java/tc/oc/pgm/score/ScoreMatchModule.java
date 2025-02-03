@@ -96,6 +96,14 @@ public class ScoreMatchModule implements MatchModule, Listener {
     return this.config.scoreLimit();
   }
 
+  public int getKillScore() {
+    return this.config.killScore();
+  }
+
+  public int getDeathScore() {
+    return this.config.deathScore();
+  }
+
   public Map<Competitor, Double> getScores() {
     return this.scores;
   }
