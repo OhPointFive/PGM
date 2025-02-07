@@ -53,7 +53,7 @@ public interface Materials {
       .build();
 
   MaterialMatcher DOOR_ITEMS = MaterialMatcher.builder()
-      .addAll(m -> m.name().contains("DOOR") && !m.name().contains("TRAPDOOR") && !m.isBlock())
+      .addAll(m -> m.name().contains("_DOOR") && !m.isBlock())
       .build();
 
   // A set of item types which, when used to interact with the match environment by non-playing
